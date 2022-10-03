@@ -12,34 +12,34 @@ const getLocationByIds = (ids) => {
   return locationAnimals.map((locationAnimal) => locationAnimal.location);
 };
 
-const objReturn = (employeeSel) => ({
-  id: employeeSel.id,
-  fullName: `${employeeSel.firstName} ${employeeSel.lastName}`,
-  species: getSpeciesByIds(employeeSel.responsibleFor),
-  locations: getLocationByIds(employeeSel.responsibleFor),
+const parseResponse = (employee) => ({
+  id: employee.id,
+  fullName: `${employee.firstName} ${employee.lastName}`,
+  species: getSpeciesByIds(employee.responsibleFor),
+  locations: getLocationByIds(employee.responsibleFor),
 });
 
 const getEmployeesByname = (obj) => {
   const { name } = obj;
-  const employeeSel = employees
+  const employee = employees
     .find(({ firstName, lastName }) => firstName === name || lastName === name);
-  if (!employeeSel) {
+  if (!employee) {
     throw new Error('Informações inválidas');
   }
-  return objReturn(employeeSel);
+  return parseResponse(employee);
 };
 
 const getEmployeesById = (obj) => {
-  const employeeSel = employees.find((employee) => employee.id === obj.id);
-  if (!employeeSel) {
+  const employee = employees.find(({ id }) => id === obj.id);
+  if (!employee) {
     throw new Error('Informações inválidas');
   }
-  return objReturn(employeeSel);
+  return parseResponse(employee);
 };
 
 const getEmployeesCoverage = (obj) => {
   if (obj === undefined) {
-    return employees.map((funcionario) => objReturn(funcionario));
+    return employees.map((empl) => parseResponse(empl));
   }
 
   if (obj.name) {
